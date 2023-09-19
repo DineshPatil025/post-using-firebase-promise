@@ -53,17 +53,39 @@ const editBtn = (ele) => {
     let editId = ele.closest(".card").id;
     let editUrl = `${baseUrl}/posts/${editId}.json`
     localStorage.setItem("editId", editId)
-    makeApiCall("GET", editUrl)
-        .then(res => {
-            let data = JSON.parse(res);
-            localStorage.setItem("editId", editId);
-            titleCtrl.value = data.title;
-            contentCtrl.value = data.content;
-            userIdCtrl.value = data.userId;
-            submitBtn.classList.add("d-none");
-            updateBtn.classList.remove("d-none");
-        })
-        .catch(err => cl(err));
+
+    Swal.fire({
+        title: 'Do you want to edit the Post?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Edit Post'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+        //   Swal.fire(
+        //     'Deleted!',
+        //     'Your file has been deleted.',
+        //     'success'
+        //   )
+          makeApiCall("GET", editUrl)
+          .then(res => {
+              let data = JSON.parse(res);
+              localStorage.setItem("editId", editId);
+              titleCtrl.value = data.title;
+              contentCtrl.value = data.content;
+              userIdCtrl.value = data.userId;
+              submitBtn.classList.add("d-none");
+              updateBtn.classList.remove("d-none");
+          })
+          .catch(err => cl(err));
+        }
+      })
+
+
+   
 }
 
 const deletBtn = (ele) => {
