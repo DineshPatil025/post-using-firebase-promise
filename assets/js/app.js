@@ -17,7 +17,10 @@ let deletPostUrl = `${baseUrl}/posts/:id.json`;
 
 let postArray = [];
 
+
+
 const objTOArray = (obj, postId) => {
+
     for (const key in obj) {
         let updateObj = obj[key];
         updateObj[postId] = key;
@@ -31,19 +34,33 @@ const objTOArray = (obj, postId) => {
 const templating = (postArray) => {
     let result = "";
     postArray.forEach(post => {
-        result +=
-            `
-                <div class="col-md-4 mb-4" >
-                        <div class="card  mb-4"  id = "${post.postId}">
-                            <div class="card-header text-center"><h3>${post.title}</h3></div>
-                            <div class="card-body"><p>${post.content}</p></div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <button class="btn btn-success" onclick="editBtn(this)">EDIT</button>
-                                <button class="btn btn-danger" onclick="deletBtn(this)">DELETE</button>
+        result +=  `
+        
+                                <div class="card text-center mb-4" id = "${post.postId}">
+                                        <div class="card-header"><h3>${post.title}</h3></div>
+                                        <div class="card-body"><p>${post.content}</p></div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                        <button class="btn btn-success" onclick="editBtn(this)">EDIT</button>
+                                        <button class="btn btn-danger" onclick="deletBtn(this)">DELETE</button>
+                                </div>
                             </div>
-                        </div>
-                </div>   
-            `
+
+
+                    `
+
+
+            // `
+            //     <div class="col-md-4 mb-4" >
+            //             <div class="card  mb-4"  id = "${post.postId}">
+            //                 <div class="card-header text-center"><h3>${post.title}</h3></div>
+            //                 <div class="card-body"><p>${post.content}</p></div>
+            //                 <div class="card-footer d-flex justify-content-between">
+            //                     <button class="btn btn-success" onclick="editBtn(this)">EDIT</button>
+            //                     <button class="btn btn-danger" onclick="deletBtn(this)">DELETE</button>
+            //                 </div>
+            //             </div>
+            //     </div>   
+            // `
     });
 
     postContainer.innerHTML = result;
@@ -64,12 +81,7 @@ const editBtn = (ele) => {
         confirmButtonText: 'Yes, Edit Post'
       }).then((result) => {
         if (result.isConfirmed) {
-
-        //   Swal.fire(
-        //     'Deleted!',
-        //     'Your file has been deleted.',
-        //     'success'
-        //   )
+    
           makeApiCall("GET", editUrl)
           .then(res => {
               let data = JSON.parse(res);
